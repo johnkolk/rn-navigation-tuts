@@ -8,14 +8,13 @@ interface Props {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '100%',
+    container: {        
+        width: '50%',
         marginBottom: 5,
-    },
-    item: {
         backgroundColor: '#efefef',
         padding: 10,
+    },
+    text: {
     },
 });
 
@@ -28,7 +27,7 @@ export default class FilmCard extends React.Component<Props, {}> {
                 onPress={() => onPress(item)}
                 style={styles.container}
             >
-                <Text style={styles.item}>{item.name}</Text>
+                <Text style={styles.text}>{item.name}</Text>
             </TouchableOpacity>
         );
     }

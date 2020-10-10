@@ -46,8 +46,7 @@ export default class HomeScreen extends React.Component<Props, State> {
         const { data } = this.state;
 
         return (
-            <>
-                <Header />
+            <>                
                 <ScrollView style={styles.container}>
                     {data.map((item: IFilmItem) => (
                         <FilmCard
