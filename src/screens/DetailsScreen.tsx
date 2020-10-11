@@ -2,6 +2,10 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { IFilmItem } from '../types';
 
+interface Props {
+    navigation: any
+}
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -12,7 +16,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class DetailsScreen extends React.Component<{}, {}> {
+export default class DetailsScreen extends React.Component<Props, {}> {
     render() {
         const {
             name,

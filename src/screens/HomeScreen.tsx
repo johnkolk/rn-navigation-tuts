@@ -1,9 +1,16 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import FilmCard from '../UI/FilmCard';
-import { IFilmItem } from '../types';
-import Header from '../UI/Header';
+import {
+    View,
+    StyleSheet,
+    Text,
+    FlatList,
+    Dimensions,
+    ListRenderItem,
+    TouchableOpacity,
+} from 'react-native';
 import { DETAILS_PAGE } from '../routes';
+import { IFilmItem } from '../types';
+import FilmCard from '../UI/FilmCard';
 
 interface State {
     data: [];
@@ -13,16 +20,20 @@ interface Props {
     navigation: any;
 }
 
-const url: string = 'http://api.tvmaze.com/shows/1/episodes';
+const url = 'http://api.tvmaze.com/shows/1/episodes';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        // alignItems: "center",
+        // justifyContent: "center",
+    },
+    flatlist: {
         padding: 10,
     },
 });
 
-export default class HomeScreen extends React.Component<Props, State> {
+export default class HomeScreen extends React.PureComponent<Props, State> {
     state: State = {
         data: [],
     };
@@ -42,21 +53,23 @@ export default class HomeScreen extends React.Component<Props, State> {
         navigation.navigate(DETAILS_PAGE, { item });
     };
 
+    renderItem: ListRenderItem<IFilmItem> = ({ item }) => (
+        <FilmCard item={item} onPress={() => this.onPressHandler(item)} />
+    );
+
     render() {
         const { data } = this.state;
 
         return (
-            <>                
-                <ScrollView style={styles.container}>
-                    {data.map((item: IFilmItem) => (
-                        <FilmCard
-                            key={item.id.toString()}
-                            item={item}
-                            onPress={this.onPressHandler}
-                        />
-                    ))}
-                </ScrollView>
-            </>
+            <View style={styles.container}>
+                <FlatList
+                    data={data}
+                    renderItem={this.renderItem}
+                    keyExtractor={(item) => item.id.toString()}
+                    numColumns={2}
+                    style={styles.flatlist}
+                />
+            </View>
         );
     }
 }
