@@ -1,22 +1,21 @@
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-    Text,
-    FlatList,
-    Dimensions,
-    ListRenderItem,
-    TouchableOpacity,
-} from 'react-native';
+import { View, StyleSheet, FlatList, ListRenderItem } from 'react-native';
 import { DETAILS_PAGE } from '../routes';
 import { IFilmItem } from '../types';
-import FilmCard from '../UI/FilmCard';
+import FilmCard from '../components/UI/FilmCard';
+import ModalWrapper from '../components/Modals/ModalWrapper';
+import { inject, observer } from 'mobx-react';
+import ModalStore from '../services/ModalStore';
 
 interface State {
     data: [];
 }
 
-interface Props {
+interface IModalStore {
+    modalStore: ModalStore;
+}
+
+interface Props extends IModalStore {
     navigation: any;
 }
 
@@ -25,15 +24,13 @@ const url = 'http://api.tvmaze.com/shows/1/episodes';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // alignItems: "center",
-        // justifyContent: "center",
     },
     flatlist: {
         padding: 10,
     },
 });
 
-export default class HomeScreen extends React.PureComponent<Props, State> {
+class HomeScreen extends React.PureComponent<Props, State> {
     state: State = {
         data: [],
     };
@@ -48,20 +45,22 @@ export default class HomeScreen extends React.PureComponent<Props, State> {
         }
     };
 
-    onPressHandler = (item: IFilmItem) => {
+    onPressHandler = (item: IFilmItem): void => {
         const { navigation } = this.props;
         navigation.navigate(DETAILS_PAGE, { item });
     };
 
-    renderItem: ListRenderItem<IFilmItem> = ({ item }) => (
-        <FilmCard item={item} onPress={() => this.onPressHandler(item)} />
-    );
+    renderItem: ListRenderItem<IFilmItem> = ({ item }) => {
+        const { modalStore } = this.props;
+        return <FilmCard item={item} onPress={this.onPressHandler} />;
+    };
 
-    render() {
+    render(): React.ReactNode {
         const { data } = this.state;
 
         return (
             <View style={styles.container}>
+                {/*<ModalWrapper />*/}
                 <FlatList
                     data={data}
                     renderItem={this.renderItem}
@@ -73,3 +72,5 @@ export default class HomeScreen extends React.PureComponent<Props, State> {
         );
     }
 }
+
+export default inject('modalStore')(observer(HomeScreen));

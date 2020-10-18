@@ -1,11 +1,9 @@
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Navigation from './screens/Navigation';
 
-const TabNavigator = createBottomTabNavigator(
-    {
-        Tab1: Navigation,
-        Tab2: Navigation
-    }
-)
+const TabNavigator = createBottomTabNavigator({
+    Films: Navigation,
+    Serials: Navigation,
+});
 
 export default createAppContainer(TabNavigator);
